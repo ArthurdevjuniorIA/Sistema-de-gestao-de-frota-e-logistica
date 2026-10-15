@@ -37,16 +37,13 @@ while True:
     Renavam = input("Digite qual o Renavam do carro: ")
     Modelo = input("Digite qual o modelo do carro: ")
     Ano = input("Digite qual o ano do carro: ")
-    print("Combustíveis oficiais pelo ANP:")
+    print("Combustíveis oficiais pelo ANP: ")
     
     for combustivel in Tipos_combustiveis:
         i +=1
         print(i,"-",combustivel)
     
-    Tipo_de_combustivel = int(input("Digite qual combustível o veículo, se usar mais de um digite", "MAIS",":" ))
-    
-    if Tipo_de_combustivel == "MAIS":
-        Mais_de_um_combustivel = int(input("Digite a outra forma de combustível que o veículo utiliza: "))
+    Tipo_de_combustivel = int(input("Digite qual combustível o veículo, se usar mais de um digite", "0",":" ))
     Caracteristicas_veiculo = {
         "Tipo de veículo": tipo_de_veiculo,
         "Consumo": consumo_veiculo,
@@ -58,7 +55,11 @@ while True:
         "Tipo Combustivel": Tipos_combustiveis[Tipo_de_combustivel-1],
         "Outro tipo de combustivel": Tipos_combustiveis[Mais_de_um_combustivel-1]
     }
-    frotas["Placa"] = Placa
+    
+    if Tipo_de_combustivel == "MAIS":
+        Mais_de_um_combustivel = int(input("Digite a outra forma de combustível que o veículo utiliza: "))
+        frotas["Outro tipo de combustivel"] = Tipos_combustiveis[Mais_de_um_combustivel-1]
+   
     
     if Placa == "fim":
         break
