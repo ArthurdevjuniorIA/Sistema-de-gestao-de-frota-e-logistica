@@ -5,8 +5,72 @@ Pessoas_cadastradas = {
 
 }
 Tipos_combustiveis = ["Biodiesel","Gasolina","Etanol","Diesel","GNV"]
-i = 1
-while True:
+
+''''********************************
+MENUS
+************************************
+'''
+def exibir_menu_gestao_de_frota():
+    print("1 - Cadastrar novo veículo (Placa, Tipo, Peso Max, Consumo, Chassi, RENAVAM)")
+    print("2 - Cadastrar motorista (Nome, CPF, CNH, Categoria, Validade)")
+    print("3 - Consultar frota completa")
+    print("4 - Consultar veículo por Placa")
+    print("0 - Voltar ao Menu Principal")
+
+def cadastro_veiculo():
+    if not Pessoas_cadastradas:
+        print("É necessário cadastrar um motorista antes de cadastrar um veículo")
+        return -1
+    else:
+        cpf = input("Digite o seu CPF para verificarmos se está no nosso cadastro: ").replace(".","").replace("-","").strip()
+        for pessoa in Pessoas_cadastradas:
+            if cpf == pessoa["cpf"]:
+               Placa = input(" Digite a placa do veículo: ")
+                   
+               tipo_de_veiculo = input("Digite o tipo de veículo: ")
+                
+               try:
+                    quanto_consome, consumo = input("Digite o valor do consumo do veículo: ").split()
+               
+               except ValueError or TypeError:
+                    print("Digite o valor de quanto consome e a unidade de medida que está utilizando, por exemplo km/l")
+                
+               consumo_veiculo = quanto_consome + consumo
+               try:
+                 capacidade_maxima, unidade_de_medida = input("Digite a capacidade máxima do veículo: ").split()
+               except ValueError or TypeError:
+                   print("Digite o valor e a unidade de medida")
+
+               status = input("Qual o status do veículo: ")
+               Renavam = input("Digite qual o Renavam do carro: ")
+               Modelo = input("Digite qual o modelo do carro: ")
+               Ano = input("Digite qual o ano do carro: ")
+               print("Combustíveis oficiais pelo ANP: ")
+                
+               for combustivel in Tipos_combustiveis:
+                    i +=1
+                    print(i,"-",combustivel)
+                
+               Tipo_de_combustivel = int(input("Digite qual combustível o veículo, se usar mais de um digite", "0",":" ))
+               Caracteristicas_veiculo = {
+                   "Placa": Placa,
+                    "Tipo de veículo": tipo_de_veiculo,
+                    "Consumo": consumo_veiculo,
+                    "Capacidade máxima":capacidade_maxima,
+                    "Status": status,
+                    "Renavam": Renavam,
+                    "Modelo": Modelo,
+                    "Ano": Ano,
+                    "Tipo Combustivel": Tipos_combustiveis[Tipo_de_combustivel-1],
+                    "Outro tipo de combustivel": Tipos_combustiveis[Mais_de_um_combustivel-1]
+                }
+                
+               if Tipo_de_combustivel == "MAIS":
+                    Mais_de_um_combustivel = int(input("Digite a outra forma de combustível que o veículo utiliza: "))
+                    frotas["Outro tipo de combustivel"] = Tipos_combustiveis[Mais_de_um_combustivel-1]
+               
+               frotas["Veiculo"] = Caracteristicas_veiculo
+def cadastro_motorista():
     Nome_completo = input("Digite o seu nome completo: ")
     CPF = input("Digite o CPF: ")
     CPF = CPF.replace(".","").strip().replace("-","")
@@ -21,45 +85,9 @@ while True:
         "Validade Carteira" : Data_validade_Carteira,
     }
     Pessoas_cadastradas["Pessoa cadastrada"] = Pessoa_cadastrada
-
-    Placa = input(" Digite a placa do veículo: ")
-    
-    tipo_de_veiculo = input("Digite o tipo de veículo: ")
-    
-    try:
-        quanto_consome, consumo = input("Digite o valor do consumo do veículo: ").split()
-    except ValueError:
-        print("Digite o valor de quanto consome e a unidade de medida que está utilizando, por exemplo km/l")
-    
-    consumo_veiculo = quanto_consome + consumo
-    capacidade_maxima = float(input("Digite a capacidade máxima do veículo: "))
-    status = input("Qual o status do veículo: ")
-    Renavam = input("Digite qual o Renavam do carro: ")
-    Modelo = input("Digite qual o modelo do carro: ")
-    Ano = input("Digite qual o ano do carro: ")
-    print("Combustíveis oficiais pelo ANP: ")
-    
-    for combustivel in Tipos_combustiveis:
-        i +=1
-        print(i,"-",combustivel)
-    
-    Tipo_de_combustivel = int(input("Digite qual combustível o veículo, se usar mais de um digite", "0",":" ))
-    Caracteristicas_veiculo = {
-        "Tipo de veículo": tipo_de_veiculo,
-        "Consumo": consumo_veiculo,
-        "Capacidade máxima":capacidade_maxima,
-        "Status": status,
-        "Renavam": Renavam,
-        "Modelo": Modelo,
-        "Ano": Ano,
-        "Tipo Combustivel": Tipos_combustiveis[Tipo_de_combustivel-1],
-        "Outro tipo de combustivel": Tipos_combustiveis[Mais_de_um_combustivel-1]
-    }
-    
-    if Tipo_de_combustivel == "MAIS":
-        Mais_de_um_combustivel = int(input("Digite a outra forma de combustível que o veículo utiliza: "))
-        frotas["Outro tipo de combustivel"] = Tipos_combustiveis[Mais_de_um_combustivel-1]
-   
-    
-    if Placa == "fim":
-        break
+                     
+def menu_gestao_de_frota():
+    exibir_menu_gestao_de_frota()
+    qual_opcao = int(input("Digite qual opção você deseja realizar: "))
+    if qual_opcao == 1:
+        cadastro_veiculo()
