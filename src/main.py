@@ -5,7 +5,7 @@ Pessoas_cadastradas = {
 
 }
 Tipos_combustiveis = ["Biodiesel","Gasolina","Etanol","Diesel","GNV"]
-
+Status_do_veiculo = ["DISPONÍVEL", "EM ROTA", "MANUTENÇÃO"]
 ''''********************************
 MENUS
 ************************************
@@ -38,13 +38,22 @@ def cadastro_veiculo():
                consumo_veiculo = quanto_consome + consumo
                try:
                  capacidade_maxima, unidade_de_medida = input("Digite a capacidade máxima do veículo: ").split()
+               
                except ValueError or TypeError:
                    print("Digite o valor e a unidade de medida")
 
-               status = input("Qual o status do veículo: ")
+               status = input("Qual o status do veículo: (Disponível, Em rota ou em manutenção) ").upper()
+               if status not in Status_do_veiculo:
+                   print("Você digitou algo diferente de:Disponível, Em rota ou  Manutenção ")
+                   continue
                Renavam = input("Digite qual o Renavam do carro: ")
                Modelo = input("Digite qual o modelo do carro: ")
                Ano = input("Digite qual o ano do carro: ")
+               try:
+                  KM_atual = float(input("Digite o km atual do veículo: "))
+               except ValueError or TypeError:
+                   print("Digite apenas números do conjunto real")
+
                print("Combustíveis oficiais pelo ANP: ")
                 
                for combustivel in Tipos_combustiveis:
@@ -54,9 +63,9 @@ def cadastro_veiculo():
                Tipo_de_combustivel = int(input("Digite qual combustível o veículo, se usar mais de um digite", "0",":" ))
                Caracteristicas_veiculo = {
                    "Placa": Placa,
-                    "Tipo de veículo": tipo_de_veiculo,
+                    "Tipo": tipo_de_veiculo,
                     "Consumo": consumo_veiculo,
-                    "Capacidade máxima":capacidade_maxima,
+                    "Capacidade":capacidade_maxima,
                     "Status": status,
                     "Renavam": Renavam,
                     "Modelo": Modelo,
@@ -85,9 +94,34 @@ def cadastro_motorista():
         "Validade Carteira" : Data_validade_Carteira,
     }
     Pessoas_cadastradas["Pessoa cadastrada"] = Pessoa_cadastrada
+
+def consultar_frota():
+    if not frotas:
+        print("Não há nenhum veículo cadastrado")
+    else:
+        print("""===================================================================
+            CONSULTA DA FROTA COMPLETA                              
+        =========================================================================""")
+        espaco = " "*5
+        espaco_maior = ""*10
+        print(f"Placa{espaco}Modelo/Marca{espaco_maior}Tipo{espaco}Capacidade(kg){espaco}KM atual{espaco}STATUS")
+        print("-"*55)
+        for frota in frotas:
+            for veiculos in frota:
+                print(f"{veiculos["Placa"]}{espaco}veiculos{["Modelo"]}{espaco_maior}{["Tipo"]}{espaco}{["Capacidade"]}{espaco}{["KM atual"]}{espaco}{['Status']}")
+
+        
                      
 def menu_gestao_de_frota():
-    exibir_menu_gestao_de_frota()
-    qual_opcao = int(input("Digite qual opção você deseja realizar: "))
-    if qual_opcao == 1:
-        cadastro_veiculo()
+    while True:
+        exibir_menu_gestao_de_frota()
+        
+        qual_opcao = int(input("Digite qual opção você deseja realizar: "))
+        if qual_opcao == 1:
+            cadastro_veiculo()
+        elif qual_opcao == 2:
+            cadastro_motorista()
+        elif qual_opcao == 3:
+            consultar_frota()
+
+menu_gestao_de_frota()
