@@ -156,6 +156,9 @@ def menu_gestao_de_frota():
             cadastro_motorista()
         elif qual_opcao == 3:
             consultar_frota()
+        elif qual_opcao == 0:
+            input("Aperte ENTER para voltar ao menu principal")
+            break
 ''''********************************
 MENUS DE CADASTRO DE MOTORISTA
 ************************************
@@ -180,16 +183,39 @@ def cadastro_motorista():
         print("Sua carteira de CNH já venceu, recomenda-se atualizar a carteira e por enquanto você não pode cadastrar nenhum veículo")
         Pessoa_cadastrada["Bloqueado"] = True
         return -1
-    Pessoa_cadastrada["Bloqueado"] = False
+    else:
+        Pessoa_cadastrada["Bloqueado"] = False
 
     
     Pessoas_cadastradas.append(Pessoa_cadastrada)
-                     
+
+def listar_motoristas():
+    if not Pessoas_cadastradas:
+        print("Nenhum motorista foi cadastrado até o momento")     
+        return -1
+    print("""===================================================================
+            CONSULTA DE TODOS OS MOTORISTAS                             
+        =========================================================================""")
+    espaco = " "*5
+    espaco_maior = ""*10
+    print(f"Nome{espaco}CPF{espaco_maior}CNH{espaco_maior}Validade carteira")
+    print("-"*55)
+    for pesssoa in Pessoas_cadastradas:
+        for cada_pessoa in pesssoa:
+            cada_pessoa["Nome"] = cada_pessoa["Nome"][:2]
+            print(f"{cada_pessoa["Nome"]}{espaco}{cada_pessoa["CPF"]}{espaco_maior}{cada_pessoa["CNH"]}")
+
+def menu_gestao_motoristas():
+    exibir_menu_gestao_motoristas()
+    qual_opcao = int(input("Digite qual opção você deseja: "))
+    if qual_opcao == 1:
+        cadastro_motorista()
+    elif qual_opcao == 2:
 
 
 def menu_principal():
     exibir_menu_principal()
-    qual_opcao = int(input("Digite a opção desejada: "))
+    qual_opcao = verificacoes.tratamento_erros(qual_opcao,"Digite a opção desejada: ")
     if qual_opcao == 1:
         menu_gestao_de_frota()
     elif qual_opcao == 2:

@@ -1,4 +1,4 @@
-import main
+
 def tratamento_erros(valor,mensagem):
     try:
         valor = int(input(mensagem))
